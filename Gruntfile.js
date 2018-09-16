@@ -1,6 +1,6 @@
 module.exports = function(grunt) {
-  const sass = require("node-sass");
-  require("load-grunt-tasks")(grunt);
+  const sass = require('node-sass');
+  require('load-grunt-tasks')(grunt);
 
   grunt.initConfig({
     copy: {
@@ -8,15 +8,15 @@ module.exports = function(grunt) {
         files: [
           {
             expand: true,
-            cwd: "source",
-            src: ["fonts/**/*.{woff,woff2}", "css/**", "img/*.svg"],
-            dest: "build/",
+            cwd: 'source',
+            src: ['fonts/**/*.{woff,woff2}', 'css/**', 'img/*.svg'],
+            dest: 'dist/',
           },
         ],
       },
     },
     clean: {
-      build: ["build"],
+      build: ['dist'],
     },
     sass: {
       options: {
@@ -25,7 +25,7 @@ module.exports = function(grunt) {
       },
       style: {
         files: {
-          "build/css/style.css": "source/sass/style.scss",
+          'dist/css/style.css': 'source/sass/style.scss',
         },
       },
     },
@@ -33,31 +33,31 @@ module.exports = function(grunt) {
       style: {
         options: {
           map: true,
-          processors: [require("autoprefixer")()],
+          processors: [require('autoprefixer')()],
         },
         dist: {
-          src: "build/css/*.css",
+          src: 'dist/css/*.css',
         },
       },
     },
     csso: {
       compress: {
         options: {
-          report: "gzip",
+          report: 'gzip',
         },
         files: {
-          "build/css/style.min.css": ["build/css/style.css"],
+          'dist/css/style.min.css': ['dist/css/style.css'],
         },
       },
     },
     babel: {
       options: {
         sourceMap: true,
-        presets: ["env"],
+        presets: ['env'],
       },
       dist: {
         files: {
-          "build/js/app.js": "source/js/app.js",
+          'dist/js/app.js': 'source/js/app.js',
         },
       },
     },
@@ -67,7 +67,7 @@ module.exports = function(grunt) {
           beautify: true,
         },
         files: {
-          "build/js/app.min.js": ["build/js/app.js"],
+          'dist/js/app.min.js': ['dist/js/app.js'],
         },
       },
     },
@@ -80,34 +80,24 @@ module.exports = function(grunt) {
         files: [
           {
             expand: true,
-            cwd: "source/img/",
-            src: ["**/*.{png,jpg,gif}"],
-            dest: "build/img/",
+            cwd: 'source/img/',
+            src: ['**/*.{png,jpg,gif}'],
+            dest: 'dist/img/',
           },
         ],
       },
     },
-    svgstore: {
-      options: {
-        includeTitleElement: false,
-      },
-      sprite: {
-        files: {
-          "build/img/sprite.svg": ["source/img/icon-*.svg"],
-        },
-      },
-    },
     posthtml: {
       options: {
-        use: [require("posthtml-include")({ root: "./", encoding: "utf-8" })],
+        use: [require('posthtml-include')({ root: './', encoding: 'utf-8' })],
       },
       build: {
         files: [
           {
             dot: true,
-            cwd: "source/",
-            src: ["*.html"],
-            dest: "build/",
+            cwd: 'source/',
+            src: ['*.html'],
+            dest: 'dist/',
             expand: true,
           },
         ],
@@ -115,19 +105,19 @@ module.exports = function(grunt) {
     },
     watch: {
       html: {
-        files: ["source/*.html"],
-        tasks: ["posthtml"],
+        files: ['source/*.html'],
+        tasks: ['posthtml'],
       },
       style: {
-        files: ["source/sass/**/*.scss"],
-        tasks: ["sass", "postcss", "csso"],
+        files: ['source/sass/**/*.scss'],
+        tasks: ['sass', 'postcss', 'csso'],
         options: {
           livereload: true,
         },
       },
       js: {
-        files: ["source/js/*.js"],
-        tasks: ["babel", "uglify"],
+        files: ['source/js/*.js'],
+        tasks: ['babel', 'uglify'],
         options: {
           reload: true,
         },
@@ -136,41 +126,47 @@ module.exports = function(grunt) {
     browserSync: {
       server: {
         bsFiles: {
-          src: ["build/*.html", "build/css/*.css", "build/js/*.js"],
+          src: ['dist/*.html', 'dist/css/*.css', 'dist/js/*.js'],
         },
         options: {
-          server: "build/",
+          server: 'dist/',
           watchTask: true,
         },
       },
     },
     stylelint: {
       options: {
-        configFile: ".stylelintrc",
-        formatter: "string",
+        configFile: '.stylelintrc',
+        formatter: 'string',
         ignoreDisables: false,
         failOnError: true,
-        outputFile: "",
+        outputFile: '',
         reportNeedlessDisables: false,
-        syntax: "",
+        syntax: '',
       },
-      all: ["source/sass/**/*.scss"],
+      all: ['source/sass/**/*.scss'],
+    },
+    'gh-pages': {
+      options: {
+        base: 'dist',
+      },
+      src: ['**'],
     },
   });
 
-  grunt.registerTask("sasslint", ["stylelint"]);
-  grunt.registerTask("serve", ["browserSync", "watch"]);
-  grunt.registerTask("build", [
-    "clean",
-    "copy",
-    "stylelint",
-    "sass",
-    "postcss",
-    "csso",
-    "babel",
-    "uglify",
-    "imagemin",
-    "svgstore",
-    "posthtml",
+  grunt.registerTask('sasslint', ['stylelint']);
+  grunt.registerTask('deploy', ['gh-pages']);
+  grunt.registerTask('serve', ['browserSync', 'watch']);
+  grunt.registerTask('build', [
+    'clean',
+    'copy',
+    'stylelint',
+    'sass',
+    'postcss',
+    'csso',
+    'babel',
+    'uglify',
+    'imagemin',
+    'posthtml',
   ]);
 };

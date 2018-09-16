@@ -4,16 +4,11 @@
   "description": "From psd to html & css",
   "main": "index.html",
   "scripts": {
-    "editorconfig": "editorconfig-cli",
-    "test": "npm run editorconfig && grunt sasslint",
+    "test": "grunt sasslint",
     "build": "grunt build",
+    "deploy": "grunt build && grunt deploy",
     "start": "npm run build && grunt serve"
   },
-  "editorconfig-cli": [
-    "*.json",
-    "source/*.html",
-    "source/**/*.scss"
-  ],
   "engines": {
     "node": "10.8.0"
   },
@@ -24,8 +19,6 @@
   "author": "uanoob",
   "license": "MIT",
   "devDependencies": {
-    "@htmlacademy/editorconfig-cli": "^1.0.0",
-    "ajv": "^6.5.3",
     "autoprefixer": "^9.1.3",
     "babel-core": "^6.26.3",
     "babel-preset-env": "^1.7.0",
@@ -39,6 +32,7 @@
     "grunt-contrib-uglify": "^3.4.0",
     "grunt-contrib-watch": "^1.1.0",
     "grunt-csso": "^2.2.1",
+    "grunt-gh-pages": "^2.0.0",
     "grunt-juwain-posthtml": "^0.6.0",
     "grunt-postcss": "^0.9.0",
     "grunt-sass": "^3.0.1",
@@ -48,7 +42,8 @@
     "node-sass": "^4.9.3",
     "posthtml-include": "^1.2.0",
     "stylelint": "^9.5.0",
-    "stylelint-config-htmlacademy": "^0.1.1"
+    "stylelint-config-recommended-scss": "^3.2.0",
+    "stylelint-scss": "^3.3.0"
   },
   "dependencies": {}
 }
