@@ -39,7 +39,7 @@
     "grunt-stylelint": "^0.10.0",
     "grunt-svgstore": "^1.0.0",
     "load-grunt-tasks": "^4.0.0",
-    "node-sass": "^4.9.3",
+    "node-sass": "^7.0.0",
     "posthtml-include": "^1.2.0",
     "stylelint": "^9.5.0",
     "stylelint-config-recommended-scss": "^3.2.0",
